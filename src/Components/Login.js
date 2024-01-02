@@ -5,11 +5,11 @@ import { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import {Link } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 
 
 const Login = () => {
-
+  const navigate=useNavigate()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -17,7 +17,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/subscribe", {
+      const response = await fetch("http://localhost:3002/user/Login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,6 +30,7 @@ const Login = () => {
       if (response.ok) {
         // Handle successful login, e.g., store authentication token
         console.log("Login successful");
+        navigate('/')
       } else {
         // Handle login error
         console.error("Login failed:", data.message);

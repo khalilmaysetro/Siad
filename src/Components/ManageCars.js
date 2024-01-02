@@ -1,65 +1,63 @@
-
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useState,useEffect } from 'react';
 import { Trash2, Edit , Plus,} from 'react-feather'; // Import Feather Icons
 import Sidebar from './Sidebar';
+import Carsform from './Carsform'
 
 const ManageCars = () => {
-  // Sample student data (you can fetch this data from an API)
-  const initialCars = [
-    {
-      id: 1,
-      Brand: 'Mercedes',
-      model : 'Class S',
-      motorisation : 'Amg 220',
-      Color: 'Black',
-      image: 'student1.jpg', // Provide the image file path
-    },
-    {
-        id: 2,
-        Brand: 'BMW',
-        model : 'Series 5',
-        motorisation : 'M',
-        Color: 'white',
-        image: 'student1.jpg', // Provide the image file path
-      },
-      {
-        id: 1,
-      Brand: 'Mercedes',
-      model : 'Class G',
-      motorisation : 'Amg 63',
-      Color: 'Black',
-      image: 'student1.jpg', // Provide the image file path
-      },
-    // Add more car data as needed
-  ];
 
-  const [cars, setCar] = useState(initialCars);
+  const [cars, setCar] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isAddingCar, setIsAddingCar] = useState(false); // State for the Add Student form/modal
+  const[isLoading,setIsLoading]=useState(false)
 
 
+  useEffect(()=>{
+    recieve_cars()
+  },[])
+ 
 
+  const recieve_cars= async (e)=>{
+    try{
+        const res= await axios.get('http://localhost:3002/car/get-carsinfo')
+        console.log(res.data)
+        setCar(res.data)
+        setIsLoading(true)
+        //console.log(cars)
+    }catch(error){
+
+    }
+  }
   // Function to handle student deletion
-  const handleDeleteCars = (carId) => {
-    // Implement your logic to delete a student by ID
-    // Update the 'students' state accordingly
+  const handleDeleteCars = async (carId) => {
+    const res= await axios.get(`http://localhost:3002/car/delete?id=${carId}`)
+    setCar(prevcar=>prevcar.filter(car=>car._id!==carId))
+    console.log(res.data)
+
   };
 
-  const filteredCars = cars.filter((car) =>
-    car.Brand.toLowerCase().includes(searchTerm.toLowerCase()) 
-  );
+  //const filteredCars = cars? cars.filter((car) =>
+    //car.Brand.toLowerCase().includes(searchTerm.toLowerCase()) 
+  //):[];
 
   // Function to open the Add Student form/modal
   const openAddCarForm = () => {
     setIsAddingCar(true);
   };
+  const addCar=(newcar)=>{
+    setCar(prev=>[...prev,newcar])
+    console.log(cars)
+    console.log(isLoading)
+    setIsAddingCar(false);
+  }
+  const carImages = require.context('../Images/cars', false, /\.png$/);
 
   return (
     <div className="flex h-screen">
         <Sidebar />
         <div className="ml-6 w-3/4 p-4">
             <h2 className="text-xl font-semibold mb-8">Manage Cars</h2>
-            
+
             <div className="flex mb-4 ">
                     {/* Search bar */}
                 <div className="mb-4 w-3/4 mt-4">
@@ -71,6 +69,7 @@ const ManageCars = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
+
                 {/* Add Student button */}
                 <button
                     className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 mb-4 "
@@ -80,26 +79,39 @@ const ManageCars = () => {
                     Add Car
                 </button>
             </div>
+            {isAddingCar && (<Carsform addCar={addCar}/>) }
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredCars.map((car) => (
+                {cars?.map((car) =>(
+
                 <div
                     key={car.id}
                     className="bg-white p-4 rounded shadow-md hover:shadow-lg transition duration-300"
                 >
-                    <img
-                    src={car.image}
-                    alt={car.name}
-                    className="w-20 h-20 mx-auto rounded-full mb-2"
-                    />
+                  {carImages.keys().includes(`./${car.Brand}.png`) ? (
+            <img
+              src={carImages(`./${car.Brand}.png`)}
+              alt={car.name}
+              className="w-20 h-20 mx-auto rounded-full mb-2"
+            />
+          ) : (
+            <img
+              src={null}
+              alt={car.name}
+              className="w-20 h-20 mx-auto rounded-full mb-2"
+            />
+          )}
+                    
                     <p className="text-lg "> Brand : {car.Brand}</p>
-                    <p className="text-lg "> Model : {car.model}</p>
-                    <p className="text-lg "> Motorisation : {car.motorisation}</p>
+                    <p className="text-lg "> Model : {car.Model}</p>
+                    <p className="text-lg "> Motorization : {car.Motorization}</p>
                     <p className="text-lg "> Color : {car.Color}</p>
                     <div className="mt-4">
                     <button
                         className="bg-blue-500 text-white py-2 px-4 rounded mr-2 hover:bg-blue-600"
                         onClick={() => {
                         // Implement your update student logic
+                        console.log(car._id)
                         }}
                     >
                         <Edit size={16} /> {/* Edit icon */}
@@ -107,7 +119,7 @@ const ManageCars = () => {
                     <button
                         className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
                         onClick={() => {
-                        handleDeleteCars(car.id);
+                        handleDeleteCars(car._id);
                         }}
                     >
                         <Trash2 size={16} /> {/* Delete icon */}
@@ -118,6 +130,7 @@ const ManageCars = () => {
             </div>
       </div>
     </div>
+
   );
 };
 

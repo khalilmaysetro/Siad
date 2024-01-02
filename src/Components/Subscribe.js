@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Header from "./Header";
 import Footer from "./Footer";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -22,12 +23,14 @@ const SubscribeForm = () => {
       [name]: value,
     }));
   };
+  const navigate=useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/subscribe', formData);
+      const response = await axios.post('http://localhost:3002/user/subscribe', formData);
       console.log('Form submitted:', response.data);
+      navigate('/login')
     } catch (error) {
       console.error(error);
     }
