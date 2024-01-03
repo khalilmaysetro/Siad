@@ -1,23 +1,21 @@
-// SalesManagement.js
+// SalesManagementVendeur.js
 import React, { useState } from 'react';
-import { Trash2, Edit, Plus } from 'react-feather';
-import Sidebar from './Sidebar';
+import { Trash2, Edit } from 'react-feather';
+import SidebarVendeur from './SidebarVendeur';
 
-const SalesManagement = () => {
+const SalesManagementVendeur = () => {
   const [sales, setSales] = useState([
-    { id: 1, marque: 'Mercedes', client: 'John Doe', vendeur: 'Salesman1', dateAchat: '2023-01-01', prix: 50000 },
     { id: 2, marque: 'BMW', client: 'John Cena', vendeur: 'Salesman2', dateAchat: '2023-02-01', prix: 60000 },
 
   ]);
 
-
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-green-100">
       <div style={{ display: 'grid', gridTemplateColumns: '250px auto' }}>
-        <Sidebar />
+	<SidebarVendeur />
       </div>
 
-      {/* Main content area */}
+
       <div className="flex-grow p-8">
 
         <h2 className="text-4xl font-extrabold text-gray-800 mb-8">Sales Management</h2>
@@ -25,7 +23,7 @@ const SalesManagement = () => {
         {/* Sales table */}
         <div className="overflow-x-auto">
           <table className="table-auto min-w-full bg-white border rounded-lg shadow-lg border-collapse">
-            <thead className="bg-blue-900 text-white">
+            <thead className="bg-green-700 text-white">
               <tr>
                 <th className="px-6 py-4">Car Model</th>
                 <th className="px-6 py-4">Client Name</th>
@@ -52,4 +50,4 @@ const SalesManagement = () => {
   );
 };
 
-export default SalesManagement;
+export default SalesManagementVendeur;

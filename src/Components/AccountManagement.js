@@ -1,79 +1,73 @@
 // AccountManagement.js
 import React, { useState } from 'react';
+import { Trash2, Edit } from 'react-feather';
 import Sidebar from './Sidebar';
 
 const AccountManagement = () => {
-  const [user, setUser] = useState({
-    username: 'exampleUser',
-    email: 'user@example.com',
-    password: '',
-    newPassword: '',
-  });
+  const [accounts, setAccounts] = useState([
+    { id: 1, username: 'utilisateur1', name: 'John Doe', accountType: 'Client' },
+    { id: 2, username: 'utilisateur2', name: 'Jane Doe', accountType: 'Vendeur' },
+    // Add more account data as needed
+  ]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+  const handleBlockAccount = (accountId) => {
+    // Implement your logic to block an account by ID
+    // Update the 'accounts' state accordingly
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Implement your account management logic here, such as updating passwords or user information.
-    // You can use API calls or any other methods based on your backend architecture.
-    // Example:
-    // if (user.newPassword !== '') {
-    //   // Call an API to update the password
-    //   console.log('Password updated successfully');
-    // }
-    // if (user.email !== '') {
-    //   // Call an API to update the email
-    //   console.log('Email updated successfully');
-    // }
-    // You should handle error cases and success messages as per your requirements.
+  const handleEditAccount = (accountId) => {
+    // Implement your logic to edit an account by ID
+    // You can open a modal or navigate to an edit page
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-gray-100">
+      {/* Sidebar */}
+      <div style={{ display: 'grid', gridTemplateColumns: '250px auto' }}>
         <Sidebar />
-        <div className="w-3/4 p-4">
-            <h2 className="text-xl font-semibold mb-8">Manage Account</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                    <label className="block text-gray-700">Username</label>
-                    <input
-                        type="text"
-                        name="username"
-                        value={user.username}
-                        onChange={handleChange}
-                        className="w-full border rounded py-2 px-3"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700">Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={user.email}
-                        onChange={handleChange}
-                        className="w-full border rounded py-2 px-3"
-                    />
-                </div>
-                <div className="mb-4">
-                <label className="block text-gray-700">New Password</label>
-                    <input
-                        type="password"
-                        name="newPassword"
-                        value={user.newPassword}
-                        onChange={handleChange}
-                        className="w-full border rounded py-2 px-3"
-                    />
-                </div>
-                <button
-                type="submit"
-                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-                >
-                Update Account
-                </button>
-            </form>
+      </div>
+
+      {/* Main content area */}
+      <div className="flex-grow p-8">
+        {/* Your main content goes here */}
+        <h2 className="text-4xl font-extrabold text-gray-800 mb-8">Account Management</h2>
+
+        {/* Improved Account table */}
+        <div className="overflow-x-auto">
+          <table className="table-auto min-w-full bg-white border rounded-lg shadow-lg border-collapse">
+            <thead className="bg-blue-900 text-white">
+              <tr>
+                <th className="px-6 py-4">Username</th>
+                <th className="px-6 py-4">Name</th>
+                <th className="px-6 py-4">Account Type</th>
+                <th className="px-6 py-4">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-800">
+              {accounts.map((account) => (
+                <tr key={account.id} className="border-t hover:bg-gray-50">
+                  <td className="px-6 py-4">{account.username}</td>
+                  <td className="px-6 py-4">{account.name}</td>
+                  <td className="px-6 py-4">{account.accountType}</td>
+                  <td className="px-6 py-4 flex items-center justify-center space-x-2">
+                    <button
+                      className="bg-red-500 text-white py-1 px-3 rounded-full transition duration-300 transform hover:scale-110"
+                      onClick={() => handleBlockAccount(account.id)}
+                    >
+                      <Trash2 size={20} />
+                    </button>
+                    <button
+                      className="bg-green-500 text-white py-1 px-3 rounded-full transition duration-300 transform hover:scale-110"
+                      onClick={() => handleEditAccount(account.id)}
+                    >
+                      <Edit size={20} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

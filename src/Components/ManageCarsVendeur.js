@@ -1,33 +1,34 @@
-// ManageCars.js
+// ManageCarsVendeur.js
 import React, { useState } from 'react';
-import { Trash2, Edit, Plus } from 'react-feather';
-import Sidebar from './Sidebar';
+import { Plus, Trash2, Edit } from 'react-feather';
+import SidebarVendeur from './SidebarVendeur';
 
-const ManageCars = () => {
+const ManageCarsVendeur = () => {
   const [cars, setCars] = useState([
-    { id: 1, marque: 'Mercedes', couleur: 'Black', moteur: 'Amg 220', prix: 50000 },
     { id: 2, marque: 'BMW', couleur: 'White', moteur: 'M', prix: 60000 },
 
   ]);
 
   const handleDeleteCar = (carId) => {
-  
+
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-green-100">
       <div style={{ display: 'grid', gridTemplateColumns: '250px auto' }}>
-        <Sidebar />
+        <SidebarVendeur />
       </div>
 
+      {/* Main content area */}
       <div className="flex-grow p-8">
-
+	
         <h2 className="text-4xl font-extrabold text-gray-800 mb-8">Manage Cars</h2>
+	
 
         {/* Cars table */}
         <div className="overflow-x-auto">
           <table className="table-auto min-w-full bg-white border rounded-lg shadow-lg border-collapse">
-            <thead className="bg-blue-900 text-white">
+            <thead className="bg-green-700 text-white">
               <tr>
                 <th className="px-6 py-4">Car Model</th>
                 <th className="px-6 py-4">Color</th>
@@ -44,7 +45,13 @@ const ManageCars = () => {
                   <td className="px-6 py-4">{car.moteur}</td>
                   <td className="px-6 py-4">${car.prix.toLocaleString()}</td>
                   <td className="px-6 py-4 flex items-center justify-center space-x-2">
-                    
+
+		    <button
+                      className="bg-red-500 text-white py-1 px-3 rounded-full transition duration-300 transform hover:scale-110"
+                      onClick={() => handleDeleteCar(car.id)}
+                    >
+                      <Trash2 size={18} />
+                    </button>
                     <button
                       className="bg-green-500 text-white py-1 px-3 rounded-full transition duration-300 transform hover:scale-110"
                     >
@@ -61,4 +68,4 @@ const ManageCars = () => {
   );
 };
 
-export default ManageCars;
+export default ManageCarsVendeur;
