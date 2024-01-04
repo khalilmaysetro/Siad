@@ -1,71 +1,133 @@
-// ManageCarsVendeur.js
-import React, { useState } from 'react';
-import { Plus, Trash2, Edit } from 'react-feather';
-import SidebarVendeur from './SidebarVendeur';
+import axios from 'axios';
+import React, { useState,useEffect } from 'react';
+import { Trash2, Edit , Plus,} from 'react-feather'; 
+import Sidebar from './SidebarVendeur';
+import Carsform from './Carsform'
 
-const ManageCarsVendeur = () => {
-  const [cars, setCars] = useState([
-    { id: 2, marque: 'BMW', couleur: 'White', moteur: 'M', prix: 60000 },
+const ManageCars = () => {
+  
+  const [cars, setCar] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isAddingCar, setIsAddingCar] = useState(false); 
+  const[isLoading,setIsLoading]=useState(false)
 
-  ]);
+  useEffect(()=>{
+    recieve_cars()
+  },[])
+  
+  const recieve_cars= async (e)=>{
+    try{
+        const res= await axios.get('http://localhost:3002/car/get-carsinfo')
+        console.log(res.data)
+        setCar(res.data)
+        setIsLoading(true)
+    }catch(error){
 
-  const handleDeleteCar = (carId) => {
-
+    }
+  }
+  
+const handleDeleteCars = async (carId) => {
+  try {
+    await axios.get(`http://localhost:3002/car/delete?id=${carId}`);
+    setCar((prevCar) => prevCar.filter((car) => car._id !== carId));
+    console.log('Car deleted successfully');
+  } catch (error) {
+    console.error('Error deleting car:', error);
+  }
+};
+  
+    const openAddCarForm = () => {
+    setIsAddingCar(true);
   };
-
-  return (
-    <div className="flex h-screen bg-green-100">
-      <div style={{ display: 'grid', gridTemplateColumns: '250px auto' }}>
-        <SidebarVendeur />
-      </div>
-
-      {/* Main content area */}
-      <div className="flex-grow p-8">
-	
-        <h2 className="text-4xl font-extrabold text-gray-800 mb-8">Manage Cars</h2>
-	
-
-        {/* Cars table */}
-        <div className="overflow-x-auto">
-          <table className="table-auto min-w-full bg-white border rounded-lg shadow-lg border-collapse">
-            <thead className="bg-green-700 text-white">
-              <tr>
-                <th className="px-6 py-4">Car Model</th>
-                <th className="px-6 py-4">Color</th>
-                <th className="px-6 py-4">Engine</th>
-                <th className="px-6 py-4">Price</th>
-                <th className="px-6 py-4">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="text-gray-800">
-              {cars.map((car) => (
-                <tr key={car.id} className="border-t hover:bg-gray-50">
-                  <td className="px-6 py-4">{car.marque}</td>
-                  <td className="px-6 py-4">{car.couleur}</td>
-                  <td className="px-6 py-4">{car.moteur}</td>
-                  <td className="px-6 py-4">${car.prix.toLocaleString()}</td>
-                  <td className="px-6 py-4 flex items-center justify-center space-x-2">
-
-		    <button
-                      className="bg-red-500 text-white py-1 px-3 rounded-full transition duration-300 transform hover:scale-110"
-                      onClick={() => handleDeleteCar(car.id)}
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                    <button
-                      className="bg-green-500 text-white py-1 px-3 rounded-full transition duration-300 transform hover:scale-110"
-                    >
-                      <Edit size={18} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
+  
+const addCar = (formData) => {
+  setCar((prev) => [...prev, formData]);
+  setIsAddingCar(false);
 };
 
-export default ManageCarsVendeur;
+
+  const carImages = require.context('../Images/cars', false, /\.png$/);
+
+  return (
+    <div className="flex h-screen bg-gray-100">
+      <div style={{ display: 'grid', gridTemplateColumns: '250px auto' }}>
+        <Sidebar />
+      </div>
+        <div className="ml-6 w-3/4 p-4">
+            <h2 className="text-4xl font-extrabold text-gray-800 mb-8">Manage Cars</h2>
+
+            <div className="flex mb-4 ">
+                    {/* Search bar */}
+                <div className="mb-4 w-3/4 mt-4">
+                    <input
+                    type="text"
+                    placeholder="Search cars..."
+                    className="border rounded py-2 px-3 w-full "
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+
+                
+                <button
+                    className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 mb-4 "
+                    onClick={openAddCarForm}
+                >
+                    <Plus size={16} className="mr-2 inline" />
+                    
+                </button>
+            </div>
+            {isAddingCar && (<Carsform addCar={addCar}/>) }
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {cars?.map((car) =>(
+                <div
+                    key={car._id}
+                    className="bg-white p-4 rounded shadow-md hover:shadow-lg transition duration-300"
+                >
+                  {carImages.keys().includes(`./${car.Brand}.png`) ? (
+            <img
+              src={carImages(`./${car.Brand}.png`)}
+              alt={car.name}
+              className="w-20 h-20 mx-auto rounded-full mb-2"
+            />
+          ) : (
+            <img
+              src={null}
+              alt={car.name}
+              className="w-20 h-20 mx-auto rounded-full mb-2"
+            />
+          )}
+                    <p className="text-lg "> Brand : {car.Brand}</p>
+                    <p className="text-lg "> Model : {car.Model}</p>
+                    <p className="text-lg "> Motorization : {car.Motorization}</p>
+                    <p className="text-lg "> Color : {car.Color}</p>
+                    <div className="mt-4">
+                    <button
+                        className="bg-blue-500 text-white py-2 px-4 rounded mr-2 hover:bg-blue-600"
+                        onClick={() => {
+                        
+                        console.log(car._id)
+                        }}
+                    >
+                        <Edit size={16} /> 
+                    </button>
+                    <button
+                        className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+                        onClick={() => {
+                        handleDeleteCars(car._id);
+                        console.log(car._id);
+                        }}
+                    >
+                        <Trash2 size={16} /> 
+                    </button>
+                    </div>
+                </div>
+                ))}
+            </div>
+      </div>
+    </div>
+
+  );
+};
+export default ManageCars;

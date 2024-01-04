@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
-import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 
 const Formcars = ({addCar}) => {
@@ -11,7 +10,7 @@ const Formcars = ({addCar}) => {
         Model: '',
         Motorization: '',
         Color: '',
-        image: null // Default to 'client'
+        image: null 
       });
     
     const handleChange = (e) => {
@@ -22,27 +21,22 @@ const Formcars = ({addCar}) => {
         }));
       }; 
      
-      const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-          const res = await axios.post('http://localhost:3002/car/upload-car', Data,
-           {
-          headers:{"Content-Type" : "multipart/form-data"}
-           }
-          );
-
-          console.log('Form submitted:', res.data);
-          console.log(Data);
-          console.log(res.data)
-          addCar(Data)
-        } catch (error) {
-          console.error(error);
-        }
-      };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await axios.post('http://localhost:3002/car/upload-car', Data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    console.log('Form submitted:', res.data);
+    addCar(res.data);  
+  } catch (error) {
+    console.error(error);
+  }
+};
 
       
     const handleFileChange = (e) => {
-        // Get the selected file from the input
+        
         const selectedFile = e.target.files[0];
         setFile(selectedFile);
         setFormData((prevData) => ({
@@ -52,7 +46,6 @@ const Formcars = ({addCar}) => {
       };
   return (
    <div>
-     <Header />
      <form className="max-w-md mx-auto p-4 bg-white shadow-md rounded-md mt-14 mb-16"
     >
       <h2 className="text-2xl font-bold mb-8">cars Form</h2>
@@ -120,7 +113,7 @@ const Formcars = ({addCar}) => {
           type="file"
           id="photo"
           name="photo"
-          accept="image/*" // Specify that only image files are allowed
+          accept="image/*" 
           onChange={handleFileChange}
           className="mt-1 p-2 w-full border rounded-md"
         />

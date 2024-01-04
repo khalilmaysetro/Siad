@@ -14,20 +14,21 @@ const SubscribeForm = () => {
     email: '',
     password: '',
     userType: 'client', // Default to 'client'
+    active: 'active',
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: value,    
     }));
   };
   const navigate=useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
+    try {	 	  
       const response = await axios.post('http://localhost:3002/user/subscribe', formData);
       console.log('Form submitted:', response.data);
       navigate('/login')
@@ -112,6 +113,7 @@ const SubscribeForm = () => {
                 <option value="seller">Seller</option>
                 </select>
             </div>
+            <input type="hidden" name="active" value="active" />
             <button
                 type="submit"
                 onClick={handleSubmit}
