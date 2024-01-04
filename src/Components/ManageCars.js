@@ -16,11 +16,10 @@ const ManageCars = () => {
     recieve_cars()
   },[])
  
-
   const recieve_cars= async (e)=>{
     try{
         const res= await axios.get('http://localhost:3002/car/get-carsinfo')
-        console.log(res.data)
+        console.log(res.data.id)
         setCar(res.data)
         setIsLoading(true)
         //console.log(cars)
@@ -30,11 +29,20 @@ const ManageCars = () => {
   }
   // Function to handle student deletion
   const handleDeleteCars = async (carId) => {
-    const res= await axios.get(`http://localhost:3002/car/delete?id=${carId}`)
-    setCar(prevcar=>prevcar.filter(car=>car._id!==carId))
-    console.log(res.data)
+    try{
+      console.log(carId)
+      const res= await axios.get(`http://localhost:3002/car/delete?id=${carId}`)
+      setCar(prevcar=>prevcar.filter(car=>car._id!==carId))
+      console.log(res.data)
+    }catch (e){ 
+      console.log(e,'yawwwww')
+    }
+   
 
   };
+  useEffect(()=>{
+    console.log(cars)
+  },[cars])
 
   //const filteredCars = cars? cars.filter((car) =>
     //car.Brand.toLowerCase().includes(searchTerm.toLowerCase()) 
@@ -44,11 +52,16 @@ const ManageCars = () => {
   const openAddCarForm = () => {
     setIsAddingCar(true);
   };
-  const addCar=(newcar)=>{
-    setCar(prev=>[...prev,newcar])
-    console.log(cars)
-    console.log(isLoading)
-    setIsAddingCar(false);
+  const addCar= async(newcar)=>{
+    try{
+      setCar(prev=>[...prev,newcar])
+      console.log(cars)
+      console.log(isLoading)
+      setIsAddingCar(false);
+    }catch(error){
+      console.log(error)
+    }
+   
   }
   const carImages = require.context('../Images/cars', false, /\.png$/);
 
@@ -85,7 +98,7 @@ const ManageCars = () => {
                 {cars?.map((car) =>(
 
                 <div
-                    key={car.id}
+                    key={car._id}
                     className="bg-white p-4 rounded shadow-md hover:shadow-lg transition duration-300"
                 >
                   {carImages.keys().includes(`./${car.Brand}.png`) ? (
@@ -106,13 +119,11 @@ const ManageCars = () => {
                     <p className="text-lg "> Model : {car.Model}</p>
                     <p className="text-lg "> Motorization : {car.Motorization}</p>
                     <p className="text-lg "> Color : {car.Color}</p>
+
                     <div className="mt-4">
                     <button
                         className="bg-blue-500 text-white py-2 px-4 rounded mr-2 hover:bg-blue-600"
-                        onClick={() => {
-                        // Implement your update student logic
-                        console.log(car._id)
-                        }}
+                        onClick={openAddCarForm}  
                     >
                         <Edit size={16} /> {/* Edit icon */}
                     </button>

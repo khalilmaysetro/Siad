@@ -13,32 +13,36 @@ const storage= multer.diskStorage({
     }
 })
 const upload = multer({ storage: storage })
-router.post('/upload-car', upload.single('image'), function (req, res, next) {
-  const {id,Brand,Model,Motorization,Color}=req.body
+router.post('/upload-car', upload.single('image'), async function (req, res, next) {
+ try{   
+  const {Brand,Model,Motorization,Color}=req.body
   let imageName=null
   console.log(req.body)
-  res.send("uploaded")
+  res.send()
   if(req.file){
      imageName=req.file.filename
   }
-  try{
-      carModel.create({id,image: imageName,Brand,Model,Motorization,Color})
-      
+     const newCar= await carModel.create({image: imageName,Brand,Model,Motorization,Color})
+     res.status(201).json(newCar)        
 
   }catch(error){
       res.send('not working')
       
   }
 })
-router.get('/get-carsinfo',(req,res)=>{
-    carModel.find({}).then(data=>{
-      res.send(data)
-    })
+router.get('/get-carsinfo',async (req,res)=>{
+    try{
+        carModel.find({}).then(data=>{
+            res.send(data)
+          })
+    }catch(error){
+        console.log(error)
+    }
+  
 })
 router.get('/delete', async(req,res)=>{
     try{
         const {id} =req.query 
-
         if(!id){
             return  res.json("it should have the id")
         }

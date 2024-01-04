@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useId } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
+import {generateUniqueId} from './util'
 
 const Formcars = ({addCar}) => {
+    
     const [file, setFile] = useState(null);
     const [Data, setFormData] = useState({
         Brand: '',
@@ -34,7 +36,7 @@ const Formcars = ({addCar}) => {
           console.log('Form submitted:', res.data);
           console.log(Data);
           console.log(res.data)
-          addCar(Data)
+          addCar(res.data)
         } catch (error) {
           console.error(error);
         }
