@@ -8,6 +8,7 @@ import Login from "./Components/Login"; // Import the Login component
 import AdminDashboard from "./Components/AdminDashboard";
 import VendeurDashboard from "./Components/VendeurDashboard";
 import AccountManagement from "./Components/AccountManagement";
+import BlockedUsers from "./Components/Blocked";
 import ManageStudents from "./Components/ManageStudents";
 import ManageCars from "./Components/ManageCars";
 import ManageCarsVendeur from "./Components/ManageCarsVendeur";
@@ -27,6 +28,7 @@ function App() {
         <Route path="/Admin" element={<AdminDashboard />} />
         <Route path="/Vendeur" element={<VendeurDashboard />} />
         <Route path="/Account" element={<AccountManagement />} />
+        <Route path="/blocked-users" element={<BlockedUsers />} />
         <Route path="/Students" element={<ManageStudents />} />
         <Route path="/Cars" element={<ManageCars />} />
         <Route path="/CarsVendeur" element={<ManageCarsVendeur />} />

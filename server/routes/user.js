@@ -10,29 +10,66 @@ router.post('/subscribe',(req,res)=>{
     .catch(error=>res.json(error))
 })
 
-router.get('/get-usersinfo',(req,res)=>{
-    userModel.find({}).then(data=>{
-      res.send(data)
-    })
-})
+router.get('/get-active-users', (req, res) => {
+  userModel.find({ active: 'active' }).then(data => {
+    res.send(data);
+  });
+});
 
-router.get('/delete', async(req,res)=>{
-    try{
-        const {id} =req.query 
+router.get('/get-notactive-users', (req, res) => {
+  userModel.find({ active: 'not_active' }).then(data => {
+    res.send(data);
+  });
+});
 
-        if(!id){
-            return  res.json("it should have the id")
-        }
-        const blockeduser= await userModel.findByIdAndDelete(id)
-        if(blockeduser){
-            res.json("the user is succesfully blocked")
-        }else{
-            res.json("user not found")
-        }
-    }catch (error){
-        res.json(error)
+router.get('/block', async (req, res) => {
+  try {
+    const { id } = req.query;
+
+    if (!id) {
+      return res.json("It should have the id");
     }
-})
+
+    const blockedUser = await userModel.findByIdAndUpdate(
+      id,
+      { active: 'not_active' },
+      { new: true }
+    );
+
+    if (blockedUser) {
+      res.json("The user is successfully blocked");
+    } else {
+      res.json("User not found");
+    }
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+
+router.get('/unblock', async (req, res) => {
+  try {
+    const { id } = req.query;
+
+    if (!id) {
+      return res.json("It should have the id");
+    }
+
+    const blockedUser = await userModel.findByIdAndUpdate(
+      id,
+      { active: 'active' },
+      { new: true }
+    );
+
+    if (blockedUser) {
+      res.json("The user is successfully unblocked");
+    } else {
+      res.json("User not found");
+    }
+  } catch (error) {
+    res.json(error);
+  }
+});
 
 router.post('/Login',(req,res)=>{
     const {email,password}=req.body

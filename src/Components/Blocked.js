@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'; // Import Link from 'react-router-dom'
 
 import Sidebar from './Sidebar';
 
-const ManageAccounts = () => {
+const Blocked = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -15,19 +15,19 @@ const ManageAccounts = () => {
 
   const receiveUsers = async () => {
     try {
-      const res = await axios.get('http://localhost:3002/user/get-active-users'); // Adjust the API route to fetch active users
+      const res = await axios.get('http://localhost:3002/user/get-notactive-users'); 
       setUsers(res.data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleBlockUser = async (userId) => {
+  const handleUnblockUser = async (userId) => {
     try {
-      const res = await axios.get(`http://localhost:3002/user/block?id=${userId}`);
+      const res = await axios.get(`http://localhost:3002/user/unblock?id=${userId}`);
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
-          user._id === userId ? { ...user, status: 'blocked' } : user
+          user._id === userId ? { ...user, status: 'unblocked' } : user
         )
       );
       console.log(res.data);
@@ -42,7 +42,7 @@ const ManageAccounts = () => {
         <Sidebar />
       </div>
       <div className="ml-6 w-3/4 p-4">
-        <h2 className="text-4xl font-extrabold text-gray-800 mb-8">Manage Accounts</h2>
+        <h2 className="text-4xl font-extrabold text-gray-800 mb-8">Blocked Accounts</h2>
 
         <div className="flex mb-4 ">
           {/* Search bar */}
@@ -55,11 +55,7 @@ const ManageAccounts = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <Link to="/blocked-users" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mt-6">
-          Blocked Users
-        </Link>
         </div>
-        
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {users?.map((user) => (
@@ -75,7 +71,7 @@ const ManageAccounts = () => {
                 <button
                   className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
                   onClick={() => {
-                    handleBlockUser(user._id);
+                    handleUnblockUser(user._id);
                   }}
                 >
                   <XCircle size={20} />
@@ -86,9 +82,12 @@ const ManageAccounts = () => {
         </div>
 
         
+        <Link to="/Account" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mt-4">
+          Active Accounts
+        </Link>
       </div>
     </div>
   );
 };
 
-export default ManageAccounts;
+export default Blocked;
