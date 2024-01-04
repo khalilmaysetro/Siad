@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { XCircle } from 'react-feather';
 import { Link } from 'react-router-dom'; // Import Link from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 import Sidebar from './Sidebar';
 
 const ManageAccounts = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-
+  const navigate =useNavigate()
   useEffect(() => {
     receiveUsers();
   }, []);
@@ -28,8 +29,10 @@ const ManageAccounts = () => {
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           user._id === userId ? { ...user, status: 'blocked' } : user
-        )
+        )&&
+        prevUsers.filter(user=>user._id!==userId)
       );
+      
       console.log(res.data);
     } catch (error) {
       console.error(error);

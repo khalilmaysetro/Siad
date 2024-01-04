@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { XCircle } from 'react-feather';
+import { PlusCircle  } from 'react-feather';
 import { Link } from 'react-router-dom'; // Import Link from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 import Sidebar from './Sidebar';
 
@@ -12,7 +13,11 @@ const Blocked = () => {
   useEffect(() => {
     receiveUsers();
   }, []);
+  const navigate=useNavigate()
 
+  useEffect(() => {
+    console.log(users)
+  }, [users]);
   const receiveUsers = async () => {
     try {
       const res = await axios.get('http://localhost:3002/user/get-notactive-users'); 
@@ -28,7 +33,8 @@ const Blocked = () => {
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           user._id === userId ? { ...user, status: 'unblocked' } : user
-        )
+        )&&
+        prevUsers.filter((user)=>user._id!==userId)
       );
       console.log(res.data);
     } catch (error) {
@@ -69,12 +75,12 @@ const Blocked = () => {
               <p className="text-lg"> User Type : {user.userType}</p>
               <div className="mt-4">
                 <button
-                  className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+                  className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
                   onClick={() => {
                     handleUnblockUser(user._id);
                   }}
                 >
-                  <XCircle size={20} />
+                  <PlusCircle  size={20} />
                 </button>
               </div>
             </div>
