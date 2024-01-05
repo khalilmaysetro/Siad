@@ -1,7 +1,7 @@
-// src/components/Home.js
-
 import React from "react";
 import Header from "./Header";
+import HeaderClient from "./HeaderClient";
+import HeaderVendeur from "./HeaderVendeur";
 import Footer from "./Footer";
 import CarouselComponent from "./Carousel";
 import Contact from "./Contact";
@@ -11,12 +11,19 @@ import { Partners } from "./Partners";
 import { Whyus } from "./whyus";
 import { Ourcars } from "./Ourcars";
 import { Proposdenous } from "./proposdenous"
+import { useAuth } from '../AuthContext';
 
 
 const Home = () => {
+	
+	const { user, logoutUser } = useAuth();
+	const userType = user?.userType || "visiteur";
+	
   return (
     <div className="bg-gray-100 min-h-screen">
-      <Header />
+      
+      {userType === "client" ? <HeaderClient /> : (userType === "seller" ? <HeaderVendeur /> : <Header />)}
+
       <Hero />
       <Partners />
       <Whyus />

@@ -71,26 +71,34 @@ router.get('/unblock', async (req, res) => {
   }
 });
 
-router.post('/Login',(req,res)=>{
-    const {email,password}=req.body
-    userModel.findOne({email:email})
-    .then(
-        user=>{
-            console.log(user)
-            if(user){
-                if(user.password===password){
-                    res.json({
-                        success:true,
-                        userType:user.userType
-                        
-                    })
-                    return
-                }else{
-                    res.json("password incorect")
-                    return
-                }
-            }res.json("noooo record is existing")
+router.post('/Login', (req, res) => {
+  const { email, password } = req.body;
+	
+  userModel.findOne({ email: email })
+    .then(user => {
+      if (user) {
+        if (user.password === password) {
+          if (user.active === 'active') {
+            res.json({
+              success: true,
+              userId: user._id,
+              name:user.name,
+              userType: user.userType,
+            });
+          } else {
+            res.status(403).json({ message: 'Your account is blocked' });
+          }
+        } else {
+          res.status(401).json({ message: 'Incorrect password' });
         }
-    )
-})
+      } else {
+        res.status(404).json({ message: 'No record exists with this email' });
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    });
+});
+
 module.exports= router

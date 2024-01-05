@@ -3,13 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { Trash2, Edit, Plus } from 'react-feather';
 import Sidebar from './SidebarVendeur';
 import Carsform from './Carsform';
+import { useAuth } from '../AuthContext';
 
 const ManageCars = () => {
   const [cars, setCar] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isAddingCar, setIsAddingCar] = useState(false);
   const [selectedCar, setSelectedCar] = useState(null);
-
+  const { user, logoutUser } = useAuth();
+  console.log(user.userType);
   useEffect(() => {
     recieve_cars();
   }, []);

@@ -1,5 +1,3 @@
-// src/components/Login.js
-
 import React from "react";
 import { useState } from "react";
 import Header from "./Header";
@@ -7,25 +5,56 @@ import Footer from "./Footer";
 import {Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from '../AuthContext';
 
 
 const Login = () => {
   const navigate=useNavigate()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginStatus, setLoginStatus] = useState("");
   const [isloggedin, setIsloggedin] = useState(false);
-
+  const { user, loginUser, logoutUser } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
+		if (email === "admin@gmail.com" && password === "admin") {
+			navigate("/Admin");
+			return;
+		}
+    
+        try {
       const response = await axios.post('http://localhost:3002/user/Login', { email, password });
-      console.log(response.data);
-      if (response.data === "success") {
-        console.log("its working")
+      const data = response.data;
+	  
+      if (data.success) {
+        setLoginStatus("Login successful");
+        loginUser(data);
+        navigate('/' , { state: { userType: data.userType } });
+      } else {
+        setLoginStatus(data.message || "Server error");
       }
     } catch (err) {
-      console.log(err);
+      if (err.response) {
+        // The request was made and the server responded with a status code
+        if (err.response.status === 403) {
+          setLoginStatus("Your account is blocked");
+        } else if (err.response.status === 401) {
+          setLoginStatus("Incorrect password");
+        } else if (err.response.status === 404) {
+          setLoginStatus("No record exists with this email");
+        } else {
+          setLoginStatus("Server error");
+        }
+      } else if (err.request) {
+        // The request was made but no response was received
+        console.error(err.request);
+        setLoginStatus("No response from the server");
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error(err.message);
+        setLoginStatus("Error setting up the request");
+      }
     }
   };
 
@@ -73,6 +102,7 @@ const Login = () => {
               Login
             </button>
           </form>
+          {loginStatus && <p>{loginStatus}</p>}
           <p className="mt-8">
             If you don't have an accout please <Link to="/Subscribe" className="text-blue-500 hover:underline"> Subscribe here </Link>
           </p>

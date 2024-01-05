@@ -17,9 +17,11 @@ import SalesManagementVendeur from "./Components/ManageSalesVendeur";
 import SubscribeForm from "./Components/Subscribe";
 import Boutique from "./Components/Boutique";
 import Error from "./Components/error";
+import { AuthProvider } from './AuthContext';
 function App() {
 
   return (
+    
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -39,6 +41,8 @@ function App() {
         <Route path="*" element={<Error />} />
       </Routes>
     </Router>
+      
+    
   );
 }
 
