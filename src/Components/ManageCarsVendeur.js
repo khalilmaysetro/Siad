@@ -9,7 +9,7 @@ const ManageCars = () => {
   const [cars, setCar] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isAddingCar, setIsAddingCar] = useState(false); 
-  const[isLoading,setIsLoading]=useState(false)
+  const [selectedCar, setSelectedCar] = useState(null);
 
   useEffect(()=>{
     recieve_cars()
@@ -20,7 +20,6 @@ const ManageCars = () => {
         const res= await axios.get('http://localhost:3002/car/get-carsinfo')
         console.log(res.data)
         setCar(res.data)
-        setIsLoading(true)
     }catch(error){
 
     }
@@ -35,6 +34,18 @@ const handleDeleteCars = async (carId) => {
     console.error('Error deleting car:', error);
   }
 };
+const handleChangecars= async (carId)=>{
+  try{
+   const res= await axios.get(`http://localhost:3002/car/getCarById?id=${carId}`)
+    const car= await res.data[0]
+    console.log(car)
+    setSelectedCar(car)
+    console.log(car.Brand) 
+    setIsAddingCar(true);
+  }catch(e){
+    console.log(e,"not working")
+  }
+}
   
     const openAddCarForm = () => {
     setIsAddingCar(true);
@@ -44,6 +55,10 @@ const addCar = (formData) => {
   setCar((prev) => [...prev, formData]);
   setIsAddingCar(false);
 };
+const updateCar=(car,id)=>{
+  setCar((prev)=>prev.filter(car=>car._id!==id))
+  setCar(prev=>[...prev,car])
+}
 
 
   const carImages = require.context('../Images/cars', false, /\.png$/);
@@ -77,7 +92,10 @@ const addCar = (formData) => {
                     
                 </button>
             </div>
-            {isAddingCar && (<Carsform addCar={addCar}/>) }
+            {isAddingCar && 
+            (<Carsform addCar={addCar} data={selectedCar}setIsAddingCar={setIsAddingCar}
+              updateCars={updateCar} setSelectedCar={setSelectedCar}
+            />) }
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {cars?.map((car) =>(
@@ -106,8 +124,7 @@ const addCar = (formData) => {
                     <button
                         className="bg-blue-500 text-white py-2 px-4 rounded mr-2 hover:bg-blue-600"
                         onClick={() => {
-                        
-                        console.log(car._id)
+                          handleChangecars(car._id)
                         }}
                     >
                         <Edit size={16} /> 

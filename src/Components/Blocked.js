@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { PlusCircle  } from 'react-feather';
 import { Link } from 'react-router-dom'; // Import Link from 'react-router-dom'
-import { useNavigate } from 'react-router-dom';
 
 import Sidebar from './Sidebar';
 
@@ -13,7 +12,6 @@ const Blocked = () => {
   useEffect(() => {
     receiveUsers();
   }, []);
-  const navigate=useNavigate()
 
   useEffect(() => {
     console.log(users)
@@ -71,7 +69,7 @@ const Blocked = () => {
             >
               <p className="text-lg"> Name : {user.name}</p>
               <p className="text-lg"> Surname : {user.surname}</p>
-              <p className="text-lg"> Email : {user.email}</p>
+              <p className="text-lg"> Email : <br />{user.email}</p>
               <p className="text-lg"> User Type : {user.userType}</p>
               <div className="mt-4">
                 <button

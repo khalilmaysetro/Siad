@@ -72,7 +72,7 @@ const ManageAccounts = () => {
             >
               <p className="text-lg"> Name : {user.name}</p>
               <p className="text-lg"> Surname : {user.surname}</p>
-              <p className="text-lg"> Email : {user.email}</p>
+              <p className="text-lg"> Email : <br /> {user.email}</p>
               <p className="text-lg"> User Type : {user.userType}</p>
               <div className="mt-4">
                 <button

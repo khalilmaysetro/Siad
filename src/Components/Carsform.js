@@ -3,14 +3,14 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Formcars = ({addCar}) => {
+const Formcars = ({addCar,data,setIsAddingCar,updateCars,setSelectedCar}) => {
     const [file, setFile] = useState(null);
     const [Data, setFormData] = useState({
-        Brand: '',
-        Model: '',
-        Motorization: '',
-        Color: '',
-        image: null 
+        Brand: data? data.Brand:'',
+        Model: data? data.Model:'',
+        Motorization:data? data.Motorization: '',
+        Color:data? data.Color: '',
+        image: data? data.image: ''
       });
     
     const handleChange = (e) => {
@@ -33,6 +33,25 @@ const handleSubmit = async (e) => {
     console.error(error);
   }
 };
+const updateCar= async (e)=>{
+  e.preventDefault();
+  if(data!==null) {
+    const id=data._id
+    console.log(Data)
+    try{
+      const res = await axios.post(`http://localhost:3002/car/update-car?id=${id}`,Data)
+      updateCars(res.data,id)
+      setSelectedCar(null)
+      setIsAddingCar(false)
+      console.log(res.data)
+    }catch(e){
+      console.log(e)
+    }
+  }else{
+    console.log('the data is not aviliable')
+  }
+
+}
 
       
     const handleFileChange = (e) => {
@@ -85,7 +104,7 @@ const handleSubmit = async (e) => {
         id="Motorization"
         name="Motorization"
         className="mt-1 p-2 w-full border rounded-md"
-        value={Data.Motorization}
+        value={ Data.Motorization}
         onChange={handleChange}
         required
         />
@@ -118,13 +137,24 @@ const handleSubmit = async (e) => {
           className="mt-1 p-2 w-full border rounded-md"
         />
       </div>
-    <button
+      {data?(
+           <button
+           type="submit"
+           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+           onClick={updateCar}
+       >
+           update car
+       </button>
+      ):(
+        <button
         type="submit"
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
         onClick={handleSubmit}
     >
         Add car
     </button>
+      )}
+   
 </form>
 </div> 
   );

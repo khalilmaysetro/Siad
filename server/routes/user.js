@@ -32,7 +32,7 @@ router.get('/block', async (req, res) => {
 
     const blockedUser = await userModel.findByIdAndUpdate(
       id,
-      { active: 'not_active' },
+      { active: 'not_active', },
       { new: true }
     );
 
