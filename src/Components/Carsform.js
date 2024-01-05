@@ -63,100 +63,99 @@ const updateCar= async (e)=>{
           image: selectedFile,
         }));
       };
-  return (
-   <div>
-     <form className="max-w-md mx-auto p-4 bg-white shadow-md rounded-md mt-14 mb-16"
-    >
-      <h2 className="text-2xl font-bold mb-8">cars Form</h2>
+return (
+  <div className="h-screen flex items-center justify-center">
+    <form className="max-w-md mx-auto p-8 bg-gray-900 shadow-md rounded-md">
+      <h2 className="text-3xl font-bold text-center mb-6 text-white">Cars Form</h2>
       <div className="mb-4">
-        <label htmlFor="name" className="block text-sm font-medium text-gray-600">
-            Brand
+        <label htmlFor="Brand" className="block text-sm font-medium text-white">
+          Brand
         </label>
         <input
-        type="text"
-        id="Brand"
-        name="Brand"  
-        className="mt-1 p-2 w-full border rounded-md"
-        value={Data.Brand}
-        onChange={handleChange}
-        required
+          type="text"
+          id="Brand"
+          name="Brand"
+          className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:border-indigo-500"
+          value={Data.Brand}
+          onChange={handleChange}
+          required
         />
-    </div>
-    <div className="mb-4">
-        <label htmlFor="Model" className="block text-sm font-medium text-gray-600">
-        model
+      </div>
+      <div className="mb-4">
+        <label htmlFor="Model" className="block text-sm font-medium text-white">
+          Model
         </label>
         <input
-        type="text"
-        id="Model"
-        name="Model"
-        className="mt-1 p-2 w-full border rounded-md"
-        value={Data.Model}
-        onChange={handleChange}
-        required
+          type="text"
+          id="Model"
+          name="Model"
+          className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:border-indigo-500"
+          value={Data.Model}
+          onChange={handleChange}
+          required
         />
-    </div>
-    <div className="mb-4">
-        <label htmlFor="Motorization" className="block text-sm font-medium text-gray-600">
-        motorization
+      </div>
+      <div className="mb-4">
+        <label htmlFor="Motorization" className="block text-sm font-medium text-white">
+          Motorization
         </label>
         <input
-        id="Motorization"
-        name="Motorization"
-        className="mt-1 p-2 w-full border rounded-md"
-        value={ Data.Motorization}
-        onChange={handleChange}
-        required
+          id="Motorization"
+          name="Motorization"
+          className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:border-indigo-500"
+          value={Data.Motorization}
+          onChange={handleChange}
+          required
         />
-    </div>
-  
-    <div className="mb-4">
-        <label htmlFor="Color" className="block text-sm font-medium text-gray-600">
-        color
+      </div>
+      <div className="mb-4">
+        <label htmlFor="Color" className="block text-sm font-medium text-white">
+          Color
         </label>
         <input
-        type="text"
-        id="Color"
-        name="Color"
-        className="mt-1 p-2 w-full border rounded-md"
-        onChange={handleChange}
-        value={Data.Color}
-        required
+          type="text"
+          id="Color"
+          name="Color"
+          className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:border-indigo-500"
+          onChange={handleChange}
+          value={Data.Color}
+          required
         />
-    </div>
-    <div className="mb-4">
-        <label htmlFor="photo" className="block text-sm font-medium text-gray-600">
+      </div>
+      <div className="mb-4">
+        <label htmlFor="photo" className="block text-sm font-medium text-white">
           Upload Photo
         </label>
         <input
           type="file"
           id="photo"
           name="photo"
-          accept="image/*" 
+          accept="image/*"
           onChange={handleFileChange}
-          className="mt-1 p-2 w-full border rounded-md"
+          className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:border-indigo-500"
         />
       </div>
-      {data?(
-           <button
-           type="submit"
-           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-           onClick={updateCar}
-       >
-           update car
-       </button>
-      ):(
+      {data ? (
         <button
-        type="submit"
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-        onClick={handleSubmit}
-    >
-        Add car
-    </button>
+          type="submit"
+          className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full"
+          onClick={updateCar}
+        >
+          Update Car
+        </button>
+      ) : (
+        <button
+          type="submit"
+          className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full"
+          onClick={handleSubmit}
+        >
+          Add Car
+        </button>
       )}
-   
-</form>
-</div> 
-  );
+    </form>
+  </div>
+);
+
+
 }
 export default Formcars
