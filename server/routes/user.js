@@ -82,13 +82,14 @@ router.post('/Login',(req,res)=>{
                     res.json({
                         success:true,
                         userType:user.userType
+                        
                     })
                     return
                 }else{
                     res.json("password incorect")
                     return
                 }
-            }res.json("no record is existing")
+            }res.json("noooo record is existing")
         }
     )
 })

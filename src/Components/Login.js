@@ -6,37 +6,26 @@ import Header from "./Header";
 import Footer from "./Footer";
 import {Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
 const Login = () => {
   const navigate=useNavigate()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isloggedin, setIsloggedin] = useState(false);
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch("http://localhost:3002/user/Login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Handle successful login, e.g., store authentication token
-        console.log("Login successful");
-        navigate('/')
-      } else {
-        // Handle login error
-        console.error("Login failed:", data.message);
+      const response = await axios.post('http://localhost:3002/user/Login', { email, password });
+      console.log(response.data);
+      if (response.data === "success") {
+        console.log("its working")
       }
-    } catch (error) {
-      console.error("Login error:", error.message);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -57,6 +46,8 @@ const Login = () => {
                 name="email"
                 className="form-input mt-2 rounded-md w-full py-2 px-3 border"
                 placeholder="Your Email"
+                onChange={(e)=>setEmail(e.target.value)}
+                value={email}
                 required
               />
             </div>
@@ -70,6 +61,8 @@ const Login = () => {
                 name="password"
                 className="form-input mt-2 rounded-md w-full py-2 px-3 border"
                 placeholder="Your Password"
+                onChange={(e)=>setPassword(e.target.value)}
+                value={password}
                 required
               />
             </div>
