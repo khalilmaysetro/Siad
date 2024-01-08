@@ -2,13 +2,21 @@
 
 import React from "react";
 import Header from "./Header";
+import HeaderClient from "./HeaderClient";
+import HeaderVendeur from "./HeaderVendeur";
+
 
 
 const Contact = () => {
+	const storedUser = JSON.parse(localStorage.getItem('user'));
+	const storedName = storedUser?.name;
+	const storedUserType = storedUser?.userType || "visiteur";
+	
+	
   return (
 
     <div className="bg-gray-100 min-h-screen">
-      <Header />
+      {storedUserType === "client" ? <HeaderClient /> : (storedUserType === "seller" ? <HeaderVendeur /> : <Header />)}
       <div className="container mx-auto p-8 pt-8">
         <h1 className="text-3xl font-semibold mb-4" >Contact Us</h1>
         <p className="text-gray-600 mb-8">

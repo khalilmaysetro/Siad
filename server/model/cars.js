@@ -2,6 +2,7 @@ const mongoose=require("mongoose")
 
 const carsSchema=new mongoose.Schema({
     id:String,
+    idV:String,
     Brand:String,
     Model:String,
     Motorization:String,

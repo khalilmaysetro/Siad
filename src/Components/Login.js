@@ -29,8 +29,9 @@ const Login = () => {
 	  
       if (data.success) {
         setLoginStatus("Login successful");
+        console.log(data);
         loginUser(data);
-        navigate('/' , { state: { userType: data.userType } });
+        navigate('/');
       } else {
         setLoginStatus(data.message || "Server error");
       }
