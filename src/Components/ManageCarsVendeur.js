@@ -9,14 +9,21 @@ const ManageCars = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isAddingCar, setIsAddingCar] = useState(false);
   const [selectedCar, setSelectedCar] = useState(null);
+<<<<<<< HEAD
   //console.log(user.userType);
+=======
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+  const storedId = storedUser?.userId;
+  
+  
+>>>>>>> b4dfd67ae80e581d3500e350d50966f4f3287306
   useEffect(() => {
     recieve_cars();
   }, []);
 
   const recieve_cars = async (e) => {
     try {
-      const res = await axios.get('http://localhost:3002/car/get-carsinfo');
+      const res = await axios.get(`http://localhost:3002/car/get-carsinfoVendeur?id=${storedId}`);
       console.log(res.data);
       setCar(res.data);
     } catch (error) {

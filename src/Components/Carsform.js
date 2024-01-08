@@ -3,6 +3,10 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+  const storedId = storedUser?.userId;
+
+
 const Formcars = ({addCar,data,setIsAddingCar,updateCars,setSelectedCar}) => {
     const [file, setFile] = useState(null);
     const [Data, setFormData] = useState({
@@ -24,7 +28,7 @@ const Formcars = ({addCar,data,setIsAddingCar,updateCars,setSelectedCar}) => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   try {
-    const res = await axios.post('http://localhost:3002/car/upload-car', Data, {
+    const res = await axios.post(`http://localhost:3002/car/upload-car?id=${storedId}`, Data, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     console.log('Form submitted:', res.data);

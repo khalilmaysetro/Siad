@@ -16,6 +16,8 @@ const upload = multer({ storage: storage })
 router.post('/upload-car', upload.single('image'), async function (req, res, next) {
 	console.log('Received request to add car:', req.body); 
   try {
+	const idVe  = req.query;
+	const idVendeur = JSON.stringify(idVe);
     const { Brand, Model, Motorization, Color } = req.body;
     let imageName = null;
 
@@ -29,6 +31,7 @@ router.post('/upload-car', upload.single('image'), async function (req, res, nex
       Model,
       Motorization,
       Color,
+      idV: idVendeur,
     });
 
     res.status(201).json(newCar);
@@ -81,6 +84,16 @@ router.get('/getCarById',async(req,res)=>{
 
 router.get('/get-carsinfo',(req,res)=>{
     carModel.find({}).then(data=>{
+      res.send(data)
+    })
+})
+
+router.get('/get-carsinfoVendeur',(req,res)=>{
+	const idV  = req.query;	
+	const id = JSON.stringify(idV);
+	console.log(id);
+	
+    carModel.find({ idV: id }).then(data=>{
       res.send(data)
     })
 })

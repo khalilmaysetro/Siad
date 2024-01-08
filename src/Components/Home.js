@@ -16,14 +16,26 @@ import { useAuth } from '../AuthContext';
 
 const Home = () => {
 	
+<<<<<<< HEAD
 	const { user, logoutUser } = useAuth();
 	const userType = user?.userType || "visiteur";
   console.log(userType)
+=======
+	//const { user, logoutUser } = useAuth();
+	const storedUser = JSON.parse(localStorage.getItem('user'));
+	const storedName = storedUser?.name;
+	const storedUserType = storedUser?.userType || "visiteur";
+	
+	console.log(storedUserType);
+	
+	
+>>>>>>> b4dfd67ae80e581d3500e350d50966f4f3287306
 	
   return (
     <div className="bg-gray-100 min-h-screen">
+    
       
-      {userType === "client" ? <HeaderClient /> : (userType === "seller" ? <HeaderVendeur /> : <Header />)}
+      {storedUserType === "client" ? <HeaderClient /> : (storedUserType === "seller" ? <HeaderVendeur /> : <Header />)}
 
       <Hero />
       <Partners />

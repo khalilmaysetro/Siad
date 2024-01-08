@@ -17,8 +17,11 @@ import SalesManagementVendeur from "./Components/ManageSalesVendeur";
 import SubscribeForm from "./Components/Subscribe";
 import Boutique from "./Components/Boutique";
 import Error from "./Components/error";
+<<<<<<< HEAD
 import {AuthProvider} from "react-auth-kit"
 
+=======
+>>>>>>> b4dfd67ae80e581d3500e350d50966f4f3287306
 function App() {
 
   return (
@@ -40,7 +43,10 @@ function App() {
         <Route path="/Boutique" element={<Boutique />} />
         <Route path="*" element={<Error />} />
       </Routes>
+<<<<<<< HEAD
  
+=======
+>>>>>>> b4dfd67ae80e581d3500e350d50966f4f3287306
       
     
   );

@@ -3,7 +3,9 @@ import React from 'react';
 import { useAuth } from '../AuthContext';
 
 const AvatarPlaceholder = () => {
-	const { user, logoutUser } = useAuth();
+	//const { user, logoutUser } = useAuth();
+	const storedUser = JSON.parse(localStorage.getItem('user'));
+	const storedName = storedUser?.name;
   return (
     /* <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-300">
       <img
@@ -14,8 +16,8 @@ const AvatarPlaceholder = () => {
       
     </div>*/
     <div>
-      {user ? (
-        <p>Welcome, {user.name}!</p>
+      {storedUser ? (
+        <p>Welcome, {storedName}!</p>
       ) : (
         <p>Please log in</p>
       )}
