@@ -11,15 +11,13 @@ import clio from "../Images/cars/Clio.png"
 import Audi from "../Images/cars/audi.png"
 import kia from "../Images/cars/kia.png"
 import bmw from "../Images/cars/Bmw.png"
-import { useAuth } from '../AuthContext';
 
 const Boutique = () => {
-	const { user, logoutUser } = useAuth();
-	const userType = user?.userType || "visiteur";
+	
     return (
     
         <div>
-            {userType === "client" ? <HeaderClient /> : (userType === "seller" ? <HeaderVendeur /> : <Header />)}
+            <Header />
             <div className='big-title-boutique'>Une large sélection de véhicules</div>
             <div className='card-ourcars'>
                 <Carproduct Imgsrc={minicooper} titre="Mini cooper" couleur="Gris" prix="190.000 DA" />

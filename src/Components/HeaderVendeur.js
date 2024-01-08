@@ -9,6 +9,8 @@ import { useAuth } from '../AuthContext';
 
 const Header = () => {
 const { user, logoutUser } = useAuth();
+const userType = user?.userType || "visiteur";
+    console.log(userType)
 	const handleLogout = () => {
     
     logoutUser();

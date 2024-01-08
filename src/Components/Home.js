@@ -18,6 +18,7 @@ const Home = () => {
 	
 	const { user, logoutUser } = useAuth();
 	const userType = user?.userType || "visiteur";
+  console.log(userType)
 	
   return (
     <div className="bg-gray-100 min-h-screen">

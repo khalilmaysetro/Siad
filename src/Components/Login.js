@@ -5,8 +5,6 @@ import Footer from "./Footer";
 import {Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from '../AuthContext';
-
 
 const Login = () => {
   const navigate=useNavigate()
@@ -14,23 +12,22 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loginStatus, setLoginStatus] = useState("");
   const [isloggedin, setIsloggedin] = useState(false);
-  const { user, loginUser, logoutUser } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-		if (email === "admin@gmail.com" && password === "admin") {
-			navigate("/Admin");
-			return;
-		}
+	
     
         try {
       const response = await axios.post('http://localhost:3002/user/Login', { email, password });
       const data = response.data;
+      console.log(data)
 	  
       if (data.success) {
         setLoginStatus("Login successful");
-        loginUser(data);
+        
         navigate('/' , { state: { userType: data.userType } });
+
+      
       } else {
         setLoginStatus(data.message || "Server error");
       }
